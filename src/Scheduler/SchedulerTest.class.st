@@ -46,9 +46,11 @@ SchedulerTest >> testRunDailyTaskNeverGetsBehind [
 	task _ scheduler do: ['task ran'] at: when.
 	
 	task basicWhen: (task nextRunTime minusDays: 2).
+	task adjustNextRunTime.
 	self should: [task nextRunTime date = Date tomorrow].
 	
 	task basicWhen: ((TimeStamp current plusSeconds: 180) minusDays: 1).
+	task adjustNextRunTime.	
 	self should: [task nextRunTime date = Date today].
 	
 

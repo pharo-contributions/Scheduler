@@ -8,6 +8,15 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+DailyScheduledTask >> adjustNextRunTime [
+
+	TimeStamp current > when ifTrue: 
+		[TimeStamp current asTime > when asTime
+			ifTrue: [when _ TimeStamp date: Date tomorrow time: when asTime]
+			ifFalse: [when _ TimeStamp date: Date today time: when asTime]]
+]
+
+{ #category : #'as yet unclassified' }
 DailyScheduledTask >> basicWhen: aTimeStamp [
 
 	when _ aTimeStamp
@@ -24,11 +33,6 @@ DailyScheduledTask >> initialize [
 { #category : #'as yet unclassified' }
 DailyScheduledTask >> nextRunTime [
 
-	TimeStamp current > when ifTrue: 
-		[TimeStamp current asTime > when asTime
-			ifTrue: [when _ TimeStamp date: Date tomorrow time: when asTime]
-			ifFalse: [when _ TimeStamp date: Date today time: when asTime]].
-		
 	^ when
 ]
 
@@ -42,7 +46,10 @@ DailyScheduledTask >> printOn: aStream [
 { #category : #'as yet unclassified' }
 DailyScheduledTask >> wasRun [
 
-	self nextRunTime
+	when _ when plusDays: 1.
+	self adjustNextRunTime
+		
+
 ]
 
 { #category : #'as yet unclassified' }
