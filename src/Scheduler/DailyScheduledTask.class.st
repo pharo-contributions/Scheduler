@@ -12,7 +12,7 @@ DailyScheduledTask >> adjustNextRunTime [
 
 	TimeStamp current > when ifTrue: 
 		[TimeStamp current asTime > when asTime
-			ifTrue: [when _ TimeStamp date: Date tomorrow time: when asTime]
+			ifTrue: [when _ TimeStamp date: Date today next time: when asTime]
 			ifFalse: [when _ TimeStamp date: Date today time: when asTime]]
 ]
 
