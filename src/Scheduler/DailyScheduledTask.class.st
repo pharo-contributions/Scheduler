@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+DailyScheduledTask >> basicWhen: aTimeStamp [
+
+	when _ aTimeStamp
+]
+
+{ #category : #'as yet unclassified' }
 DailyScheduledTask >> initialize [
 
 	super initialize.
@@ -18,6 +24,11 @@ DailyScheduledTask >> initialize [
 { #category : #'as yet unclassified' }
 DailyScheduledTask >> nextRunTime [
 
+	TimeStamp current > when ifTrue: 
+		[TimeStamp current asTime > when asTime
+			ifTrue: [when _ TimeStamp date: Date tomorrow time: when asTime]
+			ifFalse: [when _ TimeStamp date: Date today time: when asTime]].
+		
 	^ when
 ]
 
@@ -37,9 +48,6 @@ DailyScheduledTask >> wasRun [
 { #category : #'as yet unclassified' }
 DailyScheduledTask >> when: aTime [
 
-	| now |
-	now _ TimeStamp current.
-	now asTime > aTime
-		ifTrue: [when _ TimeStamp date: (Date today addDays: 1) time: aTime]
-		ifFalse: [when _ TimeStamp date: Date today time: aTime]
+	when _ TimeStamp date: Date today time: aTime
+
 ]

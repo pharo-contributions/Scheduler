@@ -37,6 +37,24 @@ SchedulerTest >> testRunDailyTask [
 ]
 
 { #category : #'as yet unclassified' }
+SchedulerTest >> testRunDailyTaskNeverGetsBehind [
+
+	| when task |
+
+	scheduler stop.
+	when _ (TimeStamp current minusSeconds: 1) asTime.
+	task _ scheduler do: ['task ran'] at: when.
+	
+	task basicWhen: (task nextRunTime minusDays: 2).
+	self should: [task nextRunTime date = Date tomorrow].
+	
+	task basicWhen: ((TimeStamp current plusSeconds: 180) minusDays: 1).
+	self should: [task nextRunTime date = Date today].
+	
+
+]
+
+{ #category : #'as yet unclassified' }
 SchedulerTest >> testRunEverySecond [
 
 	| runCount |
