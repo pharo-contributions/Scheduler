@@ -42,7 +42,7 @@ DailyScheduledTask >> printOn: aStream [
 { #category : #'as yet unclassified' }
 DailyScheduledTask >> wasRun [
 
-	when _ when plusDays: 1
+	self nextRunTime
 ]
 
 { #category : #'as yet unclassified' }
