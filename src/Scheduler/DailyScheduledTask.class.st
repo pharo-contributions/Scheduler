@@ -10,8 +10,8 @@ Class {
 { #category : #'as yet unclassified' }
 DailyScheduledTask >> adjustNextRunTime [
 
-	TimeStamp current > when ifTrue: 
-		[TimeStamp current asTime > when asTime
+	TimeStamp current >= when ifTrue: 
+		[TimeStamp current asTime >= when asTime
 			ifTrue: [when _ TimeStamp date: Date today next time: when asTime]
 			ifFalse: [when _ TimeStamp date: Date today time: when asTime]]
 ]
@@ -46,7 +46,6 @@ DailyScheduledTask >> printOn: aStream [
 { #category : #'as yet unclassified' }
 DailyScheduledTask >> wasRun [
 
-	when _ when plusDays: 1.
 	self adjustNextRunTime
 		
 

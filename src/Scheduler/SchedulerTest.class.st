@@ -21,6 +21,22 @@ SchedulerTest >> tearDown [
 ]
 
 { #category : #'as yet unclassified' }
+SchedulerTest >> testDailyTaskDoesntGetsAheadIfRunExplicitly [
+
+	| when task |
+
+	scheduler stop.
+	when _ (TimeStamp current plusSeconds: 180) asTime.
+	task _ scheduler do: ['task ran'] at: when.
+	
+	self should: [task nextRunTime date = Date today].
+	
+	task run. "run explicitly before scheduled time"
+	
+	self should: [task nextRunTime date = Date today].
+]
+
+{ #category : #'as yet unclassified' }
 SchedulerTest >> testRunDailyTask [
 
 	| message when task |
@@ -30,7 +46,7 @@ SchedulerTest >> testRunDailyTask [
 	task _ scheduler do: [message _ 'task ran'] at: when.
 	
 	(Delay forMilliseconds: 1100) wait.
-	
+
 	self should: [message = 'task ran'].
 	self should: [scheduler taskCount = 1].
 	self should: [task nextRunTime = (TimeStamp date: (Date today addDays: 1) time: when)]
