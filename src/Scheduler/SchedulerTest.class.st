@@ -119,6 +119,20 @@ SchedulerTest >> testRunEveryOtherHourOnTheHour [
 ]
 
 { #category : #'as yet unclassified' }
+SchedulerTest >> testRunEveryQuarterSecond [
+
+	| runCount |
+	runCount _ 0.
+
+	scheduler do: [runCount _ runCount + 1] every: 250 milliSeconds.
+	
+	900 milliSeconds asDelay wait.
+	
+	self should: [runCount = 3].
+	self should: [scheduler taskCount = 1]
+]
+
+{ #category : #'as yet unclassified' }
 SchedulerTest >> testRunEverySecond [
 
 	| runCount |
