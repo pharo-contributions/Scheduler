@@ -6,7 +6,9 @@ Class {
 		'scheduler',
 		'task',
 		'runHistory',
-		'workerProcess'
+		'workerProcess',
+		'schedule',
+		'nextRunTime'
 	],
 	#category : 'Scheduler'
 }
@@ -17,31 +19,37 @@ ScheduledTask class >> new [
 	^ super new initialize
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
+ScheduledTask >> convertToTimeParameter: parameter [
+
+	^ [parameter asDateAndTime] on: Error do: [Time readFrom: parameter readStream]
+]
+
+{ #category : #executing }
 ScheduledTask >> delete [
 
 	scheduler removeTask: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ScheduledTask >> description [
 
 	^ description
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ScheduledTask >> description: aString [
 
 	description _ aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 ScheduledTask >> initialize [
 
 	runHistory _ OrderedCollection new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ScheduledTask >> isRunning [
 
 	workerProcess ifNil: [^ false].
@@ -49,7 +57,7 @@ ScheduledTask >> isRunning [
 	^ workerProcess isTerminated not
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ScheduledTask >> isSuspended [
 
 	workerProcess ifNil: [^ false].
@@ -57,15 +65,16 @@ ScheduledTask >> isSuspended [
 	^ workerProcess isTerminated not and: [workerProcess isSuspended]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ScheduledTask >> nextRunTime [
 
-	self subclassResponsibility
+	^ nextRunTime
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 ScheduledTask >> printOn: aStream [
 
+	aStream nextPutAll: 'Scheduled Task'; cr.
 	self description ifNotNil: [aStream nextPutAll: self description; cr].
 	
 	self isRunning ifTrue: [aStream nextPutAll: 'CURRENTLY RUNNING !!'].
@@ -80,45 +89,98 @@ ScheduledTask >> printOn: aStream [
 			ifFalse: [runHistory last asString]).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #executing }
 ScheduledTask >> resume [
 
 	self isSuspended ifTrue: [workerProcess resume]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #executing }
 ScheduledTask >> run [
 
-	workerProcess _ [[task value] ensure: [runHistory add: TimeStamp current]] fork.
+	workerProcess _ [[task value] ensure: [runHistory add: DateAndTime now]] fork.
 
 	self wasRun
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ScheduledTask >> runHistory [
 
 	^ runHistory
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #executing }
 ScheduledTask >> runIfNecessary [
 
-	((TimeStamp current >= self nextRunTime) and: [self isRunning not]) ifTrue: [self run]
+	((DateAndTime now >= self nextRunTime) and: [self isRunning not]) ifTrue: [self run]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+ScheduledTask >> schedule [
+
+	^ schedule
+]
+
+{ #category : #accessing }
+ScheduledTask >> schedule: aSchedule [
+
+	schedule _ aSchedule.
+	nextRunTime _ schedule start.
+	
+	self setNextRunTime
+	
+]
+
+{ #category : #private }
+ScheduledTask >> scheduleHasOnlyZeroDuration [
+
+	^ schedule schedule size = 1 and: [schedule schedule first = Duration zero]
+]
+
+{ #category : #accessing }
 ScheduledTask >> scheduler [
 
 	^ scheduler
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ScheduledTask >> scheduler: aTaskScheduler [
 
 	scheduler _ aTaskScheduler
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
+ScheduledTask >> setNextRunTime [
+
+	self scheduleHasOnlyZeroDuration ifTrue: [^ self].
+	
+	schedule scheduleDo:
+		[:each | (each > DateAndTime now) ifTrue: [nextRunTime _ each. ^ self]].
+	
+	self delete "delete if no more scheduled tasks"
+]
+
+{ #category : #accessing }
+ScheduledTask >> startDateAndTime: aDateAndTime duration: aDuration [
+
+	| timeParameter |
+	timeParameter _ self convertToTimeParameter: aDateAndTime.
+	 
+	nextRunTime _ ((timeParameter isKindOf: Time)
+		ifTrue:
+			[DateAndTime date: Date today time: timeParameter]
+		ifFalse:
+			[timeParameter]).
+			
+	schedule _ Schedule starting: self nextRunTime duration: 1000 weeks.
+	schedule schedule: {aDuration}.	
+		
+	self setNextRunTime
+
+
+]
+
+{ #category : #executing }
 ScheduledTask >> stop [
 
 	self isRunning ifTrue: [workerProcess terminate]
@@ -126,7 +188,7 @@ ScheduledTask >> stop [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #executing }
 ScheduledTask >> suspend [
 
 	self isRunning ifTrue: [workerProcess suspend]
@@ -134,20 +196,22 @@ ScheduledTask >> suspend [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ScheduledTask >> task [
 
 	^ task
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 ScheduledTask >> task: aBlock [
 
 	task _ aBlock
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #executing }
 ScheduledTask >> wasRun [
 
-	"Subclasses can use to do something after task was run"
+	self scheduleHasOnlyZeroDuration ifTrue: [self delete].
+	
+	self setNextRunTime
 ]

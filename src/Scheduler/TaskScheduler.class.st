@@ -15,72 +15,50 @@ TaskScheduler class >> new [
 	^ super new initialize
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scheduling }
 TaskScheduler >> addTask: aScheduledTask [
 
-	accessProtect critical: [tasks add: aScheduledTask]
+	^ accessProtect critical: [tasks add: aScheduledTask]
 ]
 
-{ #category : #'as yet unclassified' }
-TaskScheduler >> classForTimeParameter: aTimeStampOrTime [
-
-	^ (aTimeStampOrTime isKindOf: Time)
-		ifTrue: [DailyScheduledTask]
-		ifFalse: [RunOnceScheduledTask]
-]
-
-{ #category : #'as yet unclassified' }
-TaskScheduler >> convertToTimeParameter: when [
-
-	[^ TimeStamp fromString: when] on: Error do: [^ Time readFrom: when readStream]
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #scheduling }
 TaskScheduler >> do: aBlock at: when [
 
-	when = #now
-		ifTrue: [aBlock value]
-		ifFalse:
-			[ | task aTimeParameter |
-			aTimeParameter _ when isString 
-				ifTrue: [self convertToTimeParameter: when]
-				ifFalse: [when].
-				
-			task _ (self classForTimeParameter: aTimeParameter) new
-				scheduler: self;
-				task: aBlock;
-				when: aTimeParameter.
-				
-			self addTask: task.
-			^ task]
+	^ self do: aBlock at: when every: 1 day
 ]
 
-{ #category : #'as yet unclassified' }
-TaskScheduler >> do: aBlock everyHour: anInteger [
+{ #category : #scheduling }
+TaskScheduler >> do: aBlock at: when every: aDuration [
 
-	^ self do: aBlock everyMinute: anInteger * 60
-]
-
-{ #category : #'as yet unclassified' }
-TaskScheduler >> do: aBlock everyMinute: anInteger [
-
-	^ self do: aBlock everySecond: anInteger * 60
-]
-
-{ #category : #'as yet unclassified' }
-TaskScheduler >> do: aBlock everySecond: anInteger [
-
-	| task |
-	task _ StopwatchScheduledTask new 
+	^ self addTask: (ScheduledTask new
 		scheduler: self;
 		task: aBlock;
-		secondsBetween: anInteger.
-	
-	self addTask: task.
-	^ task
+		startDateAndTime: when
+		duration: aDuration)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scheduling }
+TaskScheduler >> do: aBlock every: aDuration [
+
+	^ self do: aBlock at: Time now every: aDuration
+]
+
+{ #category : #scheduling }
+TaskScheduler >> do: aBlock following: aSchedule [
+
+	^ self addTask: (ScheduledTask new
+		scheduler: self;
+		task: aBlock;
+		schedule: aSchedule)
+]
+
+{ #category : #scheduling }
+TaskScheduler >> doOnce: aBlock at: when [
+
+	^ self do: aBlock at: when every: Duration zero
+]
+
+{ #category : #initialization }
 TaskScheduler >> initialize [
 
 	running _ false.
@@ -88,19 +66,19 @@ TaskScheduler >> initialize [
 	accessProtect _ Semaphore forMutualExclusion
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 TaskScheduler >> printOn: aStream [
 
 	aStream nextPutAll: 'Task scheduler is ', (running ifTrue: ['running'] ifFalse: ['stopped'])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scheduling }
 TaskScheduler >> removeTask: aScheduledTask [
 
 	accessProtect critical: [tasks remove: aScheduledTask]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #executing }
 TaskScheduler >> start [
 
 	| process |
@@ -110,7 +88,7 @@ TaskScheduler >> start [
 	
 	process _ [
 		[running] whileTrue: 
-			[(Delay forMilliseconds: 250) wait.
+			[0.25 seconds asDelay wait.
 			self tasksDo: [:each | each runIfNecessary]]] newProcess.
 	
 	(process respondsTo: #name:) ifTrue: [process name: 'taskScheduler'].
@@ -121,25 +99,25 @@ TaskScheduler >> start [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #executing }
 TaskScheduler >> stop [
 
 	running _ false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TaskScheduler >> taskAt: aNumber [
 
 	^ accessProtect critical: [tasks at: aNumber]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TaskScheduler >> taskCount [
 
 	^ accessProtect critical: [tasks size]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 TaskScheduler >> tasksDo: aOneArgBlock [
 	
 	| copiedTasks |
