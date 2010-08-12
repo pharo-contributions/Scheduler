@@ -98,7 +98,7 @@ ScheduledTask >> resume [
 { #category : #executing }
 ScheduledTask >> run [
 
-	workerProcess _ [[task value] ensure: [runHistory add: DateAndTime now]] fork.
+	workerProcess := [[task value] ensure: [runHistory add: DateAndTime now]] fork.
 
 	self wasRun
 ]
