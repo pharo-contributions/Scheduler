@@ -61,9 +61,9 @@ TaskScheduler >> doOnce: aBlock at: when [
 { #category : #initialization }
 TaskScheduler >> initialize [
 
-	running _ false.
-	tasks _ OrderedCollection new.
-	accessProtect _ Semaphore forMutualExclusion
+	running := false.
+	tasks := OrderedCollection new.
+	accessProtect := Semaphore forMutualExclusion
 ]
 
 { #category : #printing }
@@ -86,9 +86,9 @@ TaskScheduler >> start [
 	| process |
 	running ifTrue: [^ self].
 	
-	running _ true.
+	running := true.
 	
-	process _ [
+	process := [
 		[running] whileTrue: 
 			[0.25 seconds asDelay wait.
 			self tasksDo: [:each | each runIfNecessary]]] newProcess.
@@ -104,7 +104,7 @@ TaskScheduler >> start [
 { #category : #executing }
 TaskScheduler >> stop [
 
-	running _ false
+	running := false
 ]
 
 { #category : #accessing }
@@ -123,7 +123,7 @@ TaskScheduler >> taskCount [
 TaskScheduler >> tasksDo: aOneArgBlock [
 	
 	| copiedTasks |
-	accessProtect critical: [copiedTasks _ tasks copy].
+	accessProtect critical: [copiedTasks := tasks copy].
 	
 	copiedTasks do: aOneArgBlock
 ]

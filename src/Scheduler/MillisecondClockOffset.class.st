@@ -11,7 +11,7 @@ Class {
 MillisecondClockOffset class >> getMilliSecondOffset [
 
    | lastSecond |
-   lastSecond _ Time totalSeconds.
+   lastSecond := Time totalSeconds.
    [lastSecond = Time totalSeconds]
        whileTrue: [(Delay forMilliseconds: 1) wait].
 
@@ -39,6 +39,6 @@ MillisecondClockOffset class >> startUp: resuming [
 
 	resuming ifFalse: [^ self].
 	
-	MilliSecondOffset _ nil.
-	[MilliSecondOffset _ self getMilliSecondOffset] fork
+	MilliSecondOffset := nil.
+	[MilliSecondOffset := self getMilliSecondOffset] fork
 ]

@@ -40,13 +40,13 @@ ScheduledTask >> description [
 { #category : #accessing }
 ScheduledTask >> description: aString [
 
-	description _ aString
+	description := aString
 ]
 
 { #category : #initialization }
 ScheduledTask >> initialize [
 
-	runHistory _ OrderedCollection new
+	runHistory := OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -124,8 +124,8 @@ ScheduledTask >> schedule [
 { #category : #accessing }
 ScheduledTask >> schedule: aSchedule [
 
-	schedule _ aSchedule.
-	nextRunTime _ schedule start.
+	schedule := aSchedule.
+	nextRunTime := schedule start.
 	
 	self setNextRunTime
 	
@@ -146,7 +146,7 @@ ScheduledTask >> scheduler [
 { #category : #accessing }
 ScheduledTask >> scheduler: aTaskScheduler [
 
-	scheduler _ aTaskScheduler
+	scheduler := aTaskScheduler
 ]
 
 { #category : #private }
@@ -155,7 +155,7 @@ ScheduledTask >> setNextRunTime [
 	self scheduleHasOnlyZeroDuration ifTrue: [^ self].
 	
 	schedule scheduleDo:
-		[:each | (each > DateAndTime now) ifTrue: [nextRunTime _ each. ^ self]].
+		[:each | (each > DateAndTime now) ifTrue: [nextRunTime := each. ^ self]].
 	
 	self delete "delete if no more scheduled tasks"
 ]
@@ -164,15 +164,15 @@ ScheduledTask >> setNextRunTime [
 ScheduledTask >> startDateAndTime: aDateAndTime duration: aDuration [
 
 	| timeParameter |
-	timeParameter _ self convertToTimeParameter: aDateAndTime.
+	timeParameter := self convertToTimeParameter: aDateAndTime.
 	 
-	nextRunTime _ ((timeParameter isKindOf: Time)
+	nextRunTime := ((timeParameter isKindOf: Time)
 		ifTrue:
 			[DateAndTime date: Date today time: timeParameter]
 		ifFalse:
 			[timeParameter]).
 			
-	schedule _ Schedule starting: self nextRunTime duration: 1000 weeks.
+	schedule := Schedule starting: self nextRunTime duration: 1000 weeks.
 	schedule schedule: {aDuration}.	
 		
 	self setNextRunTime
@@ -205,7 +205,7 @@ ScheduledTask >> task [
 { #category : #accessing }
 ScheduledTask >> task: aBlock [
 
-	task _ aBlock
+	task := aBlock
 ]
 
 { #category : #executing }

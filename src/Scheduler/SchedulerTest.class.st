@@ -10,7 +10,7 @@ Class {
 { #category : #'as yet unclassified' }
 SchedulerTest >> setUp [
 
-	scheduler _ TaskScheduler new.
+	scheduler := TaskScheduler new.
 	scheduler start.
 ]
 
@@ -25,7 +25,7 @@ SchedulerTest >> testDailyTaskDoesntGetsAheadIfRunExplicitly [
 
 	| task |
 
-	task _ scheduler do: ['task ran'] at: DateAndTime now + 10 seconds.
+	task := scheduler do: ['task ran'] at: DateAndTime now + 10 seconds.
 	
 	self should: [task nextRunTime asDate = Date today].
 	
@@ -39,9 +39,9 @@ SchedulerTest >> testNewTaskScheduledToRunEarlierInDayGetsRescheduledLaterInDay 
 
 	| message when task |
 
-	when _ (DateAndTime now - 1 minute) asTime.
+	when := (DateAndTime now - 1 minute) asTime.
 	
-	task _ scheduler do: [message _ 'task ran'] at: when.
+	task := scheduler do: [message := 'task ran'] at: when.
 	
 	1.1 seconds asDelay wait.
 
@@ -54,8 +54,8 @@ SchedulerTest >> testNewTaskScheduledToRunEarlierInDayGetsRescheduledLaterInDay 
 SchedulerTest >> testRunAtSomeTimeInTheFuture [
 
 	| task timeToRun |
-	timeToRun _ DateAndTime now + 2 second.
-	task _ scheduler do: [] at: timeToRun every: 1 hour.
+	timeToRun := DateAndTime now + 2 second.
+	task := scheduler do: [] at: timeToRun every: 1 hour.
 	
 	2.1 seconds asDelay wait.
 	
@@ -72,9 +72,9 @@ SchedulerTest >> testRunDailyTask [
 
 	| message when task |
 
-	when _ (DateAndTime now + 1 second) asTime.
+	when := (DateAndTime now + 1 second) asTime.
 	
-	task _ scheduler do: [message _ 'task ran'] at: when.
+	task := scheduler do: [message := 'task ran'] at: when.
 	
 	1.1 seconds asDelay wait.
 
@@ -89,7 +89,7 @@ SchedulerTest >> testRunDailyTaskNeverGetsBehind [
 	| task |
 
 	scheduler stop.
-	task _ scheduler do: ['task ran'] at: DateAndTime now.
+	task := scheduler do: ['task ran'] at: DateAndTime now.
 	
 	task startDateAndTime: (task nextRunTime - 2 days) duration: 1 day.
 	scheduler start.
@@ -108,9 +108,9 @@ SchedulerTest >> testRunEveryOtherHourOnTheHour [
 
 	| currentTime task |
 	scheduler stop.
-	currentTime _ DateAndTime now asTime.
+	currentTime := DateAndTime now asTime.
 	
-	task _ scheduler do: [] at: currentTime hour asString every: 2 hours.
+	task := scheduler do: [] at: currentTime hour asString every: 2 hours.
 	task run.
 		
 	self should: [task nextRunTime asTime hour = ((currentTime addSeconds: 2 * 60 * 60) hour)].
@@ -122,9 +122,9 @@ SchedulerTest >> testRunEveryOtherHourOnTheHour [
 SchedulerTest >> testRunEveryQuarterSecond [
 
 	| runCount |
-	runCount _ 0.
+	runCount := 0.
 
-	scheduler do: [runCount _ runCount + 1] every: 250 milliSeconds.
+	scheduler do: [runCount := runCount + 1] every: 250 milliSeconds.
 	
 	900 milliSeconds asDelay wait.
 	
@@ -136,9 +136,9 @@ SchedulerTest >> testRunEveryQuarterSecond [
 SchedulerTest >> testRunEverySecond [
 
 	| runCount |
-	runCount _ 0.
+	runCount := 0.
 
-	scheduler do: [runCount _ runCount + 1] every: 1 second.
+	scheduler do: [runCount := runCount + 1] every: 1 second.
 	
 	3.1 seconds asDelay wait.
 	
@@ -150,9 +150,9 @@ SchedulerTest >> testRunEverySecond [
 SchedulerTest >> testRunInASecond [
 
 	| ranWhen now |
-	now _ DateAndTime now.
+	now := DateAndTime now.
 	
-	scheduler do: [ranWhen _ DateAndTime now] at: (now + 1 seconds).
+	scheduler do: [ranWhen := DateAndTime now] at: (now + 1 seconds).
 	
 	1.1 seconds asDelay wait.
 
@@ -163,7 +163,7 @@ SchedulerTest >> testRunInASecond [
 SchedulerTest >> testRunOnceInPastRunsOnce [
 
 	| message |
-	scheduler doOnce: [message _ 'task ran'] at: (DateAndTime now - 1 second).
+	scheduler doOnce: [message := 'task ran'] at: (DateAndTime now - 1 second).
 	
 	1 second asDelay wait.
 	
@@ -175,8 +175,8 @@ SchedulerTest >> testRunOnceInPastRunsOnce [
 SchedulerTest >> testRunOnlyOnceWithFullyQualifiedDateAndTime [
 
 	| runCount |
-	runCount _ 0.
-	scheduler doOnce: [runCount _ runCount + 1] at: (DateAndTime now + 1 seconds).
+	runCount := 0.
+	scheduler doOnce: [runCount := runCount + 1] at: (DateAndTime now + 1 seconds).
 	
 	1.1 seconds asDelay wait.
 	
@@ -188,8 +188,8 @@ SchedulerTest >> testRunOnlyOnceWithFullyQualifiedDateAndTime [
 SchedulerTest >> testRunOnlyOnceWithOnlyTimeSpecified [
 
 	| runCount |
-	runCount _ 0.
-	scheduler doOnce: [runCount _ runCount + 1] at: ((DateAndTime now + 1 seconds) asTime).
+	runCount := 0.
+	scheduler doOnce: [runCount := runCount + 1] at: ((DateAndTime now + 1 seconds) asTime).
 	
 	1.1 seconds asDelay wait.
 	
@@ -201,10 +201,10 @@ SchedulerTest >> testRunOnlyOnceWithOnlyTimeSpecified [
 SchedulerTest >> testRunSeveralTasks [
 
 	| task1 task2 now |
-	now _ DateAndTime now.
+	now := DateAndTime now.
 	
-	scheduler do: [task1 _ 'task 1'] at: (now + 1 second).
-	scheduler do: [task2 _ 'task 2'] at: (now + 1 second).
+	scheduler do: [task1 := 'task 1'] at: (now + 1 second).
+	scheduler do: [task2 := 'task 2'] at: (now + 1 second).
 	
 	1.1 seconds asDelay wait.
 
@@ -216,12 +216,12 @@ SchedulerTest >> testRunSeveralTasks [
 SchedulerTest >> testRunUsingCustomSchedule [
 
 	| runCount schedule |
-	runCount _ 0.
+	runCount := 0.
 	
-	schedule _ Schedule starting: DateAndTime now duration: 1 minute.
+	schedule := Schedule starting: DateAndTime now duration: 1 minute.
 	schedule schedule: {1 second. 2 seconds. 20 seconds}.
 	
-	scheduler do: [runCount _ runCount + 1] following: schedule.
+	scheduler do: [runCount := runCount + 1] following: schedule.
 	3.1 seconds asDelay wait.
 	
 	self should: [runCount = 2].
@@ -233,12 +233,12 @@ SchedulerTest >> testRunUsingCustomSchedule [
 SchedulerTest >> testRunUsingCustomScheduleThatEnds [
 
 	| runCount schedule |
-	runCount _ 0.
+	runCount := 0.
 	
-	schedule _ Schedule starting: (DateAndTime now + 1 second) duration: 4 seconds.
+	schedule := Schedule starting: (DateAndTime now + 1 second) duration: 4 seconds.
 	schedule schedule: {1 second. 2 seconds}.
 	
-	scheduler do: [runCount _ runCount + 1] following: schedule.
+	scheduler do: [runCount := runCount + 1] following: schedule.
 	5.1 seconds asDelay wait.
 	
 	self should: [runCount = 3].
