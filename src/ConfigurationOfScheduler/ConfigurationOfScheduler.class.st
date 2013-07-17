@@ -120,6 +120,18 @@ ConfigurationOfScheduler >> baseline10: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfScheduler >> baseline20: spec [
+	<version: '2.0-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/TorstenBergmann/Scheduler/main'.
+		spec package: 'Scheduler'.
+		spec group: 'default' with: #('Scheduler' ). ].
+
+]
+
 { #category : #'symbolic versions' }
 ConfigurationOfScheduler >> development: spec [
 	<symbolicVersion: #'development'>
@@ -145,7 +157,7 @@ ConfigurationOfScheduler >> project [
 ConfigurationOfScheduler >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.0'.
+	spec for: #'common' version: '2.0'.
 
 ]
 
@@ -158,6 +170,19 @@ ConfigurationOfScheduler >> version10: spec [
 		spec description: 'initial version'.
 		spec author: 'SeanDeNigris'.
 		spec timestamp: '6/7/2012 14:16'.
+		spec package: 'Scheduler' with: 'Scheduler-DiegoKogan.20'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfScheduler >> version20: spec [
+	<version: '2.0' imports: #('1.0-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'release'.
+		spec description: 'migrated from SqS to STHub'.
+		spec author: 'TorstenBergmann'.
+		spec timestamp: '7/17/2013 14:16'.
 		spec package: 'Scheduler' with: 'Scheduler-DiegoKogan.20'. ].
 
 ]
