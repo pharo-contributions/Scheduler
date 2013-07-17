@@ -176,7 +176,7 @@ ConfigurationOfScheduler >> version10: spec [
 
 { #category : #versions }
 ConfigurationOfScheduler >> version20: spec [
-	<version: '2.0' imports: #('1.0-baseline' )>
+	<version: '2.0' imports: #('2.0-baseline' )>
 
 	spec for: #'common' do: [
 		spec blessing: #'release'.
