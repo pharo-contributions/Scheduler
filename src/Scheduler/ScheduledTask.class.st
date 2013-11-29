@@ -49,7 +49,13 @@ ScheduledTask >> initialize [
 	runHistory := OrderedCollection new
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
+ScheduledTask >> isActive [
+
+	^ scheduler isRunning.
+]
+
+{ #category : #testing }
 ScheduledTask >> isRunning [
 
 	workerProcess ifNil: [^ false].
@@ -57,7 +63,7 @@ ScheduledTask >> isRunning [
 	^ workerProcess isTerminated not
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 ScheduledTask >> isSuspended [
 
 	workerProcess ifNil: [^ false].
@@ -109,8 +115,9 @@ ScheduledTask >> runHistory [
 	^ runHistory
 ]
 
-{ #category : #executing }
+{ #category : #private }
 ScheduledTask >> runIfNecessary [
+	"For TaskScheduler only. To run manually, send #run"
 
 	((DateAndTime now >= self nextRunTime) and: [self isRunning not]) ifTrue: [self run]
 ]
@@ -180,6 +187,15 @@ ScheduledTask >> startDateAndTime: aDateAndTime duration: aDuration [
 
 ]
 
+{ #category : #accessing }
+ScheduledTask >> statusDescription [
+
+	self isActive ifFalse: [ ^ 'Scheduler stopped' ].
+	self isRunning ifTrue: [ ^ 'Running' ].
+	self isSuspended ifTrue: [ ^ 'Suspended' ].
+	^ 'Waiting for next run'.
+]
+
 { #category : #executing }
 ScheduledTask >> stop [
 
@@ -208,7 +224,7 @@ ScheduledTask >> task: aBlock [
 	task := aBlock
 ]
 
-{ #category : #executing }
+{ #category : #private }
 ScheduledTask >> wasRun [
 
 	self scheduleHasOnlyZeroDuration ifTrue: [self delete].

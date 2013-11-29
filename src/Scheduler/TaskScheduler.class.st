@@ -76,6 +76,12 @@ TaskScheduler >> initialize [
 	accessProtect := Semaphore forMutualExclusion
 ]
 
+{ #category : #testing }
+TaskScheduler >> isRunning [
+
+	^ running.
+]
+
 { #category : #printing }
 TaskScheduler >> printOn: aStream [
 
@@ -129,11 +135,14 @@ TaskScheduler >> taskCount [
 	^ accessProtect critical: [tasks size]
 ]
 
+{ #category : #private }
+TaskScheduler >> tasks [
+
+	accessProtect critical: [ ^ tasks copy ].
+]
+
 { #category : #accessing }
 TaskScheduler >> tasksDo: aOneArgBlock [
 	
-	| copiedTasks |
-	accessProtect critical: [copiedTasks := tasks copy].
-	
-	copiedTasks do: aOneArgBlock
+	^ self tasks do: aOneArgBlock
 ]
