@@ -4,7 +4,7 @@ Class {
 	#classVars : [
 		'MilliSecondOffset'
 	],
-	#category : 'Scheduler'
+	#category : #Scheduler
 }
 
 { #category : #'as yet unclassified' }

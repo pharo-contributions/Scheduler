@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'scheduler'
 	],
-	#category : 'Scheduler'
+	#category : #Scheduler
 }
 
 { #category : #'as yet unclassified' }
@@ -78,9 +78,9 @@ SchedulerTest >> testRunDailyTask [
 	
 	1.1 seconds asDelay wait.
 
-	self should: [message = 'task ran'].
-	self should: [scheduler taskCount = 1].
-	self should: [task nextRunTime = (DateAndTime date: (Date today addDays: 1) time: when)]
+	self assert: message equals: 'task ran'.
+	self assert: scheduler taskCount equals: 1.
+	self assert: task nextRunTime equals: (DateAndTime date: (Date today addDays: 1) time: when)
 ]
 
 { #category : #'as yet unclassified' }
@@ -128,8 +128,8 @@ SchedulerTest >> testRunEveryQuarterSecond [
 	
 	900 milliSeconds asDelay wait.
 	
-	self should: [runCount = 3].
-	self should: [scheduler taskCount = 1]
+	self assert: runCount equals: 4.
+	self assert: scheduler taskCount equals: 1
 ]
 
 { #category : #'as yet unclassified' }
@@ -142,8 +142,8 @@ SchedulerTest >> testRunEverySecond [
 	
 	3.1 seconds asDelay wait.
 	
-	self should: [runCount = 3].
-	self should: [scheduler taskCount = 1]
+	self assert: runCount equals: 4.
+	self assert: scheduler taskCount equals: 1
 ]
 
 { #category : #'as yet unclassified' }
@@ -156,7 +156,9 @@ SchedulerTest >> testRunInASecond [
 	
 	1.1 seconds asDelay wait.
 
-	self should: [ranWhen = (now + 1 seconds)]
+	"Time's nanosecond precision is too fine to do an exact comparision"
+	self assert: ranWhen > (now + 1 second).
+	self assert: ranWhen < (now + 1.5 seconds).
 ]
 
 { #category : #'as yet unclassified' }

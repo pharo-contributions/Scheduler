@@ -10,7 +10,7 @@ Class {
 		'schedule',
 		'nextRunTime'
 	],
-	#category : 'Scheduler'
+	#category : #Scheduler
 }
 
 { #category : #'as yet unclassified' }

@@ -6,7 +6,7 @@ Class {
 		'tasks',
 		'accessProtect'
 	],
-	#category : 'Scheduler'
+	#category : #Scheduler
 }
 
 { #category : #'as yet unclassified' }
@@ -30,26 +30,36 @@ TaskScheduler >> do: aBlock at: when [
 { #category : #scheduling }
 TaskScheduler >> do: aBlock at: when every: aDuration [
 
-	^ self addTask: (ScheduledTask new
+	| task |
+	task := ScheduledTask new
 		scheduler: self;
 		task: aBlock;
 		startDateAndTime: when
-		duration: aDuration)
+		duration: aDuration;
+		yourself.
+	^ self addTask: task.
 ]
 
 { #category : #scheduling }
 TaskScheduler >> do: aBlock every: aDuration [
 
-	^ self do: aBlock at: Time now every: aDuration
+	| task |
+	task := self do: aBlock at: Time now every: aDuration.
+	^ task
+		run;
+		yourself.
 ]
 
 { #category : #scheduling }
 TaskScheduler >> do: aBlock following: aSchedule [
 
-	^ self addTask: (ScheduledTask new
+	| task |
+	task := ScheduledTask new
 		scheduler: self;
 		task: aBlock;
-		schedule: aSchedule)
+		schedule: aSchedule;
+		yourself.
+	^ self addTask: task
 ]
 
 { #category : #scheduling }
