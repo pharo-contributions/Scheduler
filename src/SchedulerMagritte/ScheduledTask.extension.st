@@ -71,12 +71,12 @@ ScheduledTask >> descriptionRunHistory [
 	<magritteDescription>
 	
     ^ MAToManyRelationDescription new
-        accessor: #runHistory;
-        label: 'History';
-        priority: 400;
+		accessor: #runHistory;
+		label: 'History';
+		priority: 400;
 		display: [ :e | e asDate mmddyyyy, ' @ ', e asTime hhmm24 ];
 		beReadonly;
-        yourself.
+		yourself.
 ]
 
 { #category : #'*SchedulerMagritte' }
