@@ -158,6 +158,7 @@ ConfigurationOfScheduler >> stable: spec [
 	<symbolicVersion: #'stable'>
 
 	spec for: #'common' version: '2.0'.
+	spec for: #'pharo4.x' version: '2.2'.
 
 ]
 
@@ -184,5 +185,18 @@ ConfigurationOfScheduler >> version20: spec [
 		spec author: 'TorstenBergmann'.
 		spec timestamp: '7/17/2013 14:16'.
 		spec package: 'Scheduler' with: 'Scheduler-DiegoKogan.20'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfScheduler >> version22: spec [
+	<version: '2.2' imports: #('2.0-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'release'.
+		spec description: 'Pharo 4 Configuration'.
+		spec author: 'TorstenBergmann'.
+		spec timestamp: '7/12/2015 17:00'.
+		spec package: 'Scheduler' with: 'Scheduler-SeanDeNigris.22'. ].
 
 ]
