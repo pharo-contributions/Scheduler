@@ -1,3 +1,6 @@
+"
+Handles clock offset in milliseconds
+"
 Class {
 	#name : #MillisecondClockOffset,
 	#superclass : #Object,
@@ -7,7 +10,7 @@ Class {
 	#category : #'Scheduler-Core-Utilities'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MillisecondClockOffset class >> getMilliSecondOffset [
 
    | lastSecond |
@@ -18,15 +21,13 @@ MillisecondClockOffset class >> getMilliSecondOffset [
    ^ Time millisecondClockValue \\ 1000.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 MillisecondClockOffset class >> initialize [
 
-	super initialize.
-
-	Smalltalk addToStartUpList: self.
+	Smalltalk addToStartUpList: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MillisecondClockOffset class >> milliSeconds [
 
 	^ MilliSecondOffset
@@ -34,7 +35,7 @@ MillisecondClockOffset class >> milliSeconds [
 		ifNotNil: [(Time millisecondClockValue - MilliSecondOffset) \\ 1000]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'system startup' }
 MillisecondClockOffset class >> startUp: resuming [
 
 	resuming ifFalse: [^ self].
