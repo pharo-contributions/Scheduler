@@ -1,5 +1,5 @@
 "
-Handles clock offset in milliseconds
+Utility class to handle clock offset in millisecond
 "
 Class {
 	#name : #MillisecondClockOffset,
