@@ -4,7 +4,7 @@ Class {
 	#classVars : [
 		'MilliSecondOffset'
 	],
-	#category : #'Scheduler-Core-Scheduler-Core'
+	#category : #'Scheduler-Core-Utilities'
 }
 
 { #category : #'as yet unclassified' }

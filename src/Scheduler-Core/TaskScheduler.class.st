@@ -6,7 +6,7 @@ Class {
 		'tasks',
 		'accessProtect'
 	],
-	#category : #'Scheduler-Core-Scheduler-Core'
+	#category : #'Scheduler-Core-Base'
 }
 
 { #category : #'as yet unclassified' }

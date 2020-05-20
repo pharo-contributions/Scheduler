@@ -10,7 +10,7 @@ Class {
 		'schedule',
 		'nextRunTime'
 	],
-	#category : #'Scheduler-Core-Scheduler-Core'
+	#category : #'Scheduler-Core-Base'
 }
 
 { #category : #'as yet unclassified' }
