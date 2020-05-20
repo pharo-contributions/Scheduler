@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'scheduler'
 	],
-	#category : #'Scheduler-Core-Tests'
+	#category : #'Scheduler-Core-Tests-Base'
 }
 
 { #category : #'as yet unclassified' }
