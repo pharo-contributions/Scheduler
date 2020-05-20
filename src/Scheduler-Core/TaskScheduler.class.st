@@ -1,3 +1,6 @@
+"
+A task scheduler is scheduling tasks
+"
 Class {
 	#name : #TaskScheduler,
 	#superclass : #Object,

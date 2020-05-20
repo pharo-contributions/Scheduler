@@ -1,3 +1,6 @@
+"
+A schedules task
+"
 Class {
 	#name : #ScheduledTask,
 	#superclass : #Object,
