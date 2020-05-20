@@ -29,11 +29,11 @@ SchedulerTest >> testDailyTaskDoesntGetsAheadIfRunExplicitly [
 
 	task := scheduler do: ['task ran'] at: DateAndTime now + 10 seconds.
 	
-	self should: [task nextRunTime asDate = Date today].
+	self assert: task nextRunTime asDate equals: Date today.
 	
 	task run. "run explicitly before scheduled time"
 	
-	self should: [task nextRunTime asDate = Date today].
+	self assert: task nextRunTime asDate equals: Date today
 ]
 
 { #category : #tests }
@@ -47,9 +47,9 @@ SchedulerTest >> testNewTaskScheduledToRunEarlierInDayGetsRescheduledLaterInDay 
 	
 	1.1 seconds asDelay wait.
 
-	self should: [message isNil].
-	self should: [scheduler taskCount = 1].
-	self should: [task nextRunTime = (DateAndTime date: (Date today addDays: 1) time: when)]
+	self assert: message isNil.
+	self assert: scheduler taskCount equals: 1.
+	self assert: task nextRunTime equals: (DateAndTime date: (Date today addDays: 1) time: when)
 ]
 
 { #category : #tests }
@@ -61,9 +61,9 @@ SchedulerTest >> testRunAtSomeTimeInTheFuture [
 	
 	2.1 seconds asDelay wait.
 	
-	self should: [task nextRunTime = (timeToRun + 1 hour)].
-	self should: [task schedule schedule first = 1 hour].
-	self should: [scheduler taskCount = 1]
+	self assert: task nextRunTime equals: (timeToRun + 1 hour).
+	self assert: task schedule schedule first equals: 1 hour.
+	self assert: scheduler taskCount equals: 1
 	
 	
 
@@ -97,12 +97,12 @@ SchedulerTest >> testRunDailyTaskNeverGetsBehind [
 	scheduler start.
 	1 second asDelay wait.
 	
-	self should: [task nextRunTime asDate = Date tomorrow].
+	self assert: task nextRunTime asDate equals: Date tomorrow.
 	
 	task startDateAndTime: ((DateAndTime now + 180 seconds) - 1 day) duration: 1 day.
 	1 second asDelay wait.
 	
-	self should: [task nextRunTime asDate = Date today]
+	self assert: task nextRunTime asDate equals: Date today
 ]
 
 { #category : #tests }
@@ -115,9 +115,9 @@ SchedulerTest >> testRunEveryOtherHourOnTheHour [
 	task := scheduler do: [] at: currentTime hour asString every: 2 hours.
 	task run.
 		
-	self should: [task nextRunTime asTime hour = ((currentTime addSeconds: 2 * 60 * 60) hour)].
+	self assert: task nextRunTime asTime hour equals: (currentTime addSeconds: 2 * 60 * 60) hour.
 
-	self should: [task nextRunTime > DateAndTime now]
+	self assert: task nextRunTime > DateAndTime now
 ]
 
 { #category : #tests }
@@ -160,7 +160,7 @@ SchedulerTest >> testRunInASecond [
 
 	"Time's nanosecond precision is too fine to do an exact comparision"
 	self assert: ranWhen > (now + 1 second).
-	self assert: ranWhen < (now + 1.5 seconds).
+	self assert: ranWhen < (now + 1.5 seconds)
 ]
 
 { #category : #tests }
@@ -171,8 +171,8 @@ SchedulerTest >> testRunOnceInPastRunsOnce [
 	
 	1 second asDelay wait.
 	
-	self should: [message = 'task ran'].
-	self should: [scheduler taskCount = 0]
+	self assert: message equals: 'task ran'.
+	self assert: scheduler taskCount equals: 0
 ]
 
 { #category : #tests }
@@ -184,8 +184,8 @@ SchedulerTest >> testRunOnlyOnceWithFullyQualifiedDateAndTime [
 	
 	1.1 seconds asDelay wait.
 	
-	self should: [runCount = 1].
-	self should: [scheduler taskCount = 0]
+	self assert: runCount equals: 1.
+	self assert: scheduler taskCount equals: 0
 ]
 
 { #category : #tests }
@@ -197,8 +197,8 @@ SchedulerTest >> testRunOnlyOnceWithOnlyTimeSpecified [
 	
 	1.1 seconds asDelay wait.
 	
-	self should: [runCount = 1].
-	self should: [scheduler taskCount = 0]
+	self assert: runCount equals: 1.
+	self assert: scheduler taskCount equals: 0
 ]
 
 { #category : #tests }
@@ -212,8 +212,8 @@ SchedulerTest >> testRunSeveralTasks [
 	
 	1.1 seconds asDelay wait.
 
-	self should: [task1 = 'task 1'].
-	self should: [task2 = 'task 2'].
+	self assert: task1 equals: 'task 1'.
+	self assert: task2 equals: 'task 2'.
 ]
 
 { #category : #tests }
@@ -226,10 +226,10 @@ SchedulerTest >> testRunUsingCustomSchedule [
 	schedule schedule: {1 second. 2 seconds. 20 seconds}.
 	
 	scheduler do: [runCount := runCount + 1] following: schedule.
-	3.1 seconds asDelay wait.
+	3.2 seconds asDelay wait.
 	
-	self should: [runCount = 2].
-	self should: [scheduler taskCount = 1]
+	self assert: runCount equals: 2.
+	self assert: scheduler taskCount equals: 1
 
 ]
 
@@ -245,7 +245,7 @@ SchedulerTest >> testRunUsingCustomScheduleThatEnds [
 	scheduler do: [runCount := runCount + 1] following: schedule.
 	5.1 seconds asDelay wait.
 	
-	self should: [runCount = 3].
-	self should: [scheduler taskCount = 0]
+	self assert: runCount equals: 3.
+	self assert: scheduler taskCount equals: 0
 
 ]
