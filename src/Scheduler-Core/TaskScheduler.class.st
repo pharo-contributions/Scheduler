@@ -12,12 +12,6 @@ Class {
 	#category : #'Scheduler-Core-Base'
 }
 
-{ #category : #'as yet unclassified' }
-TaskScheduler class >> new [
-
-	^ super new initialize
-]
-
 { #category : #scheduling }
 TaskScheduler >> addTask: aScheduledTask [
 
