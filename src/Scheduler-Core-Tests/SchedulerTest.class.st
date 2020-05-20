@@ -10,14 +10,16 @@ Class {
 { #category : #running }
 SchedulerTest >> setUp [
 
+	super setUp.
 	scheduler := TaskScheduler new.
-	scheduler start.
+	scheduler start
 ]
 
 { #category : #running }
 SchedulerTest >> tearDown [
 
 	scheduler stop.
+	super tearDown 
 ]
 
 { #category : #tests }
