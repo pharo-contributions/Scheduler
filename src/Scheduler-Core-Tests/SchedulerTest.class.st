@@ -7,20 +7,20 @@ Class {
 	#category : #'Scheduler-Core-Tests-Base'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 SchedulerTest >> setUp [
 
 	scheduler := TaskScheduler new.
 	scheduler start.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 SchedulerTest >> tearDown [
 
 	scheduler stop.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testDailyTaskDoesntGetsAheadIfRunExplicitly [
 
 	| task |
@@ -34,7 +34,7 @@ SchedulerTest >> testDailyTaskDoesntGetsAheadIfRunExplicitly [
 	self should: [task nextRunTime asDate = Date today].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testNewTaskScheduledToRunEarlierInDayGetsRescheduledLaterInDay [
 
 	| message when task |
@@ -50,7 +50,7 @@ SchedulerTest >> testNewTaskScheduledToRunEarlierInDayGetsRescheduledLaterInDay 
 	self should: [task nextRunTime = (DateAndTime date: (Date today addDays: 1) time: when)]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunAtSomeTimeInTheFuture [
 
 	| task timeToRun |
@@ -67,7 +67,7 @@ SchedulerTest >> testRunAtSomeTimeInTheFuture [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunDailyTask [
 
 	| message when task |
@@ -83,7 +83,7 @@ SchedulerTest >> testRunDailyTask [
 	self assert: task nextRunTime equals: (DateAndTime date: (Date today addDays: 1) time: when)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunDailyTaskNeverGetsBehind [
 
 	| task |
@@ -103,7 +103,7 @@ SchedulerTest >> testRunDailyTaskNeverGetsBehind [
 	self should: [task nextRunTime asDate = Date today]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunEveryOtherHourOnTheHour [
 
 	| currentTime task |
@@ -118,7 +118,7 @@ SchedulerTest >> testRunEveryOtherHourOnTheHour [
 	self should: [task nextRunTime > DateAndTime now]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunEveryQuarterSecond [
 
 	| runCount |
@@ -132,7 +132,7 @@ SchedulerTest >> testRunEveryQuarterSecond [
 	self assert: scheduler taskCount equals: 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunEverySecond [
 
 	| runCount |
@@ -146,7 +146,7 @@ SchedulerTest >> testRunEverySecond [
 	self assert: scheduler taskCount equals: 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunInASecond [
 
 	| ranWhen now |
@@ -161,7 +161,7 @@ SchedulerTest >> testRunInASecond [
 	self assert: ranWhen < (now + 1.5 seconds).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunOnceInPastRunsOnce [
 
 	| message |
@@ -173,7 +173,7 @@ SchedulerTest >> testRunOnceInPastRunsOnce [
 	self should: [scheduler taskCount = 0]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunOnlyOnceWithFullyQualifiedDateAndTime [
 
 	| runCount |
@@ -186,7 +186,7 @@ SchedulerTest >> testRunOnlyOnceWithFullyQualifiedDateAndTime [
 	self should: [scheduler taskCount = 0]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunOnlyOnceWithOnlyTimeSpecified [
 
 	| runCount |
@@ -199,7 +199,7 @@ SchedulerTest >> testRunOnlyOnceWithOnlyTimeSpecified [
 	self should: [scheduler taskCount = 0]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunSeveralTasks [
 
 	| task1 task2 now |
@@ -214,7 +214,7 @@ SchedulerTest >> testRunSeveralTasks [
 	self should: [task2 = 'task 2'].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunUsingCustomSchedule [
 
 	| runCount schedule |
@@ -231,7 +231,7 @@ SchedulerTest >> testRunUsingCustomSchedule [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 SchedulerTest >> testRunUsingCustomScheduleThatEnds [
 
 	| runCount schedule |
