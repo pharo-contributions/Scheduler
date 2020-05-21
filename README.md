@@ -1,4 +1,7 @@
 # Scheduler
+
+[![Build Status](https://travis-ci.org/pharo-contributions/Scheduler.svg?branch=master)](https://travis-ci.org/pharo-contributions/Scheduler) [![Coverage Status](https://coveralls.io/repos/github/pharo-contributions/Scheduler/badge.svg?branch=master)](https://coveralls.io/github/pharo-contributions/Scheduler?branch=master)
+
 An easy-to-use task scheduler that can run arbitrary blocks
 
 ## Quick start
