@@ -10,6 +10,8 @@ Metacello new
     load
 ```
 
+[![Pharo Scheduler](https://img.youtube.com/vi/NOr32YgdujI/0.jpg)](https://www.youtube.com/watch?v=NOr32YgdujI)
+
 ## Overview
 
 An easy-to-use task scheduler that can run arbitrary blocks:
