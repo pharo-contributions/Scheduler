@@ -1,3 +1,6 @@
+"
+Configuration for https://github.com/pharo-contributions/Schedulers
+"
 Class {
 	#name : #ConfigurationOfScheduler,
 	#superclass : #Object,
@@ -154,10 +157,22 @@ ConfigurationOfScheduler >> baseline20: spec [
 ]
 
 { #category : #'symbolic versions' }
+ConfigurationOfScheduler >> dev: spec [
+	<version: #'dev'>
+
+	spec for: #'common' do: [ 
+		spec
+			baseline: 'Scheduler' with: [ 
+				spec 
+					className: 'BaselineOfScheduler';
+					repository: 'github://pharo-contributions/Scheduler:master/src' ]]
+]
+
+{ #category : #'symbolic versions' }
 ConfigurationOfScheduler >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: #'notDefined'.
+	spec for: #'common' version: #'dev'.
 
 ]
 
@@ -178,7 +193,7 @@ ConfigurationOfScheduler >> project [
 ConfigurationOfScheduler >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '2.0'.
+	spec for: #'common' version: '3.0.0'.
 	spec for: #'pharo4.x' version: '2.2'.
 	spec for: #'pharo5.x' version: '2.2'.
 
@@ -221,4 +236,16 @@ ConfigurationOfScheduler >> version22: spec [
 		spec timestamp: '7/12/2015 17:00'.
 		spec package: 'Scheduler' with: 'Scheduler-SeanDeNigris.22'. ].
 
+]
+
+{ #category : #versions }
+ConfigurationOfScheduler >> version300: spec [
+	<version: '3.0.0'>
+
+	spec for: #'common' do: [ 
+		spec
+			baseline: 'Scheduler' with: [ 
+				spec 
+					className: 'BaselineOfScheduler';
+					repository: 'github://pharo-contributions/Scheduler:3.0.0/src' ]]
 ]
