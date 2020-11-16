@@ -13,12 +13,12 @@ Class {
 { #category : #accessing }
 MillisecondClockOffset class >> getMilliSecondOffset [
 
-   | lastSecond |
-   lastSecond := Time totalSeconds.
-   [lastSecond = Time totalSeconds]
-       whileTrue: [(Delay forMilliseconds: 1) wait].
+	| lastSecond |
+	lastSecond := Time totalSeconds.
+	[ lastSecond = Time totalSeconds ] whileTrue: [ 
+		(Delay forMilliseconds: 1) wait ].
 
-   ^ Time millisecondClockValue \\ 1000.
+	^ Time millisecondClockValue \\ 1000
 ]
 
 { #category : #'class initialization' }
@@ -31,15 +31,15 @@ MillisecondClockOffset class >> initialize [
 MillisecondClockOffset class >> milliSeconds [
 
 	^ MilliSecondOffset
-		ifNil: [0]
-		ifNotNil: [(Time millisecondClockValue - MilliSecondOffset) \\ 1000]
+		  ifNil: [ 0 ]
+		  ifNotNil: [ Time millisecondClockValue - MilliSecondOffset \\ 1000 ]
 ]
 
 { #category : #'system startup' }
 MillisecondClockOffset class >> startUp: resuming [
 
-	resuming ifFalse: [^ self].
-	
+	resuming ifFalse: [ ^ self ].
+
 	MilliSecondOffset := nil.
-	[MilliSecondOffset := self getMilliSecondOffset] fork
+	[ MilliSecondOffset := self getMilliSecondOffset ] fork
 ]

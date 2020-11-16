@@ -19,7 +19,9 @@ Class {
 { #category : #private }
 ScheduledTask >> convertToTimeParameter: parameter [
 
-	^ [parameter asDateAndTime] on: Error do: [Time readFrom: parameter readStream]
+	^ [ parameter asDateAndTime ]
+		  on: Error
+		  do: [ Time readFrom: parameter readStream ]
 ]
 
 { #category : #executing }
@@ -49,23 +51,23 @@ ScheduledTask >> initialize [
 { #category : #testing }
 ScheduledTask >> isActive [
 
-	^ scheduler isRunning.
+	^ scheduler isRunning
 ]
 
 { #category : #testing }
 ScheduledTask >> isRunning [
 
-	workerProcess ifNil: [^ false].
-	
+	workerProcess ifNil: [ ^ false ].
+
 	^ workerProcess isTerminated not
 ]
 
 { #category : #testing }
 ScheduledTask >> isSuspended [
 
-	workerProcess ifNil: [^ false].
-	
-	^ workerProcess isTerminated not and: [workerProcess isSuspended]
+	workerProcess ifNil: [ ^ false ].
+
+	^ workerProcess isTerminated not and: [ workerProcess isSuspended ]
 ]
 
 { #category : #accessing }
@@ -85,17 +87,19 @@ ScheduledTask >> printOn: aStream [
 	
 	aStream
 		cr;
-		nextPutAll: 'Next Run Time : ', self nextRunTime asString;
+		nextPutAll: 'Next Run Time : ';
+		nextPutAll: self nextRunTime asString;
 		cr;
-		nextPutAll: 'Last Run Time : ', (runHistory isEmpty 
-			ifTrue: ['<never run>']
-			ifFalse: [runHistory last asString]).
+		nextPutAll: 'Last Run Time : ';
+		nextPutAll: (runHistory isEmpty 
+							ifTrue: ['<never run>']
+							ifFalse: [runHistory last asString])
 ]
 
 { #category : #executing }
 ScheduledTask >> resume [
 
-	self isSuspended ifTrue: [workerProcess resume]
+	self isSuspended ifTrue: [ workerProcess resume ]
 ]
 
 { #category : #executing }
@@ -116,7 +120,8 @@ ScheduledTask >> runHistory [
 ScheduledTask >> runIfNecessary [
 	"For TaskScheduler only. To run manually, send #run"
 
-	((DateAndTime now >= self nextRunTime) and: [self isRunning not]) ifTrue: [self run]
+	(DateAndTime now >= self nextRunTime and: [ self isRunning not ]) 
+		ifTrue: [ self run ]
 ]
 
 { #category : #accessing }
@@ -138,7 +143,8 @@ ScheduledTask >> schedule: aSchedule [
 { #category : #private }
 ScheduledTask >> scheduleHasOnlyZeroDuration [
 
-	^ schedule schedule size = 1 and: [schedule schedule first = Duration zero]
+	^ schedule schedule size = 1 and: [ 
+		  schedule schedule first = Duration zero ]
 ]
 
 { #category : #accessing }
@@ -190,23 +196,19 @@ ScheduledTask >> statusDescription [
 	self isActive ifFalse: [ ^ 'Scheduler stopped' ].
 	self isRunning ifTrue: [ ^ 'Running' ].
 	self isSuspended ifTrue: [ ^ 'Suspended' ].
-	^ 'Waiting for next run'.
+	^ 'Waiting for next run'
 ]
 
 { #category : #executing }
 ScheduledTask >> stop [
 
-	self isRunning ifTrue: [workerProcess terminate]
-
-	
+	self isRunning ifTrue: [ workerProcess terminate ]
 ]
 
 { #category : #executing }
 ScheduledTask >> suspend [
 
-	self isRunning ifTrue: [workerProcess suspend]
-
-	
+	self isRunning ifTrue: [ workerProcess suspend ]
 ]
 
 { #category : #accessing }
@@ -224,7 +226,7 @@ ScheduledTask >> task: aBlock [
 { #category : #private }
 ScheduledTask >> wasRun [
 
-	self scheduleHasOnlyZeroDuration ifTrue: [self delete].
-	
+	self scheduleHasOnlyZeroDuration ifTrue: [ self delete ].
+
 	self setNextRunTime
 ]
