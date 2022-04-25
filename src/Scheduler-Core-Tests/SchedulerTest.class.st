@@ -59,7 +59,8 @@ SchedulerTest >> testRunAtSomeTimeInTheFuture [
 	timeToRun := DateAndTime now + 2 second.
 	task := scheduler do: [] at: timeToRun every: 1 hour.
 	
-	2.1 seconds asDelay wait.
+	"set enough time that even on slow computers like CI the test can pass"
+	3 seconds asDelay wait.
 	
 	self assert: task nextRunTime equals: (timeToRun + 1 hour).
 	self assert: task schedule schedule first equals: 1 hour.
@@ -226,7 +227,8 @@ SchedulerTest >> testRunUsingCustomSchedule [
 	schedule schedule: {1 second. 2 seconds. 20 seconds}.
 	
 	scheduler do: [runCount := runCount + 1] following: schedule.
-	3.2 seconds asDelay wait.
+	"set enough time that even on slow computers like CI the test can pass"
+	4 seconds asDelay wait.
 	
 	self assert: runCount equals: 2.
 	self assert: scheduler taskCount equals: 1
