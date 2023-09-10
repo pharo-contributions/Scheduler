@@ -1,5 +1,5 @@
 "
-Baseline for https://github.com/pharo-contributions/Scheduler
+Baseline for [https://github.com/pharo-contributions/Scheduler](https://github.com/pharo-contributions/Scheduler)
 "
 Class {
 	#name : #BaselineOfScheduler,
@@ -22,6 +22,7 @@ BaselineOfScheduler >> baseline: spec [
 			spec	
 				group: 'Core' with: #('Scheduler-Core');
 				group: 'Tests' with: #('Scheduler-Core-Tests');
+				group: 'CI' with: #('Tests');
 				group: 'all' with: #('Core' 'Tests');
-				group: 'default' with: #('Core' 'Tests') ]
+				group: 'default' with: #('all') ]
 ]

@@ -1,8 +1,16 @@
 # Scheduler
 
-[![Build Status](https://travis-ci.org/pharo-contributions/Scheduler.svg?branch=master)](https://travis-ci.org/pharo-contributions/Scheduler) [![Coverage Status](https://coveralls.io/repos/github/pharo-contributions/Scheduler/badge.svg?branch=master)](https://coveralls.io/github/pharo-contributions/Scheduler?branch=master)
+An easy-to-use **task scheduler** for [Pharo](https://www.pharo.org) that can run arbitrary blocks
 
-An easy-to-use task scheduler that can run arbitrary blocks
+[![Unit Tests](https://github.com/pharo-contributions/Scheduler/workflows/Build/badge.svg?branch=master)](https://github.com/pharo-contributions/Scheduler/actions?query=workflow%3ABuild)
+[![Coverage Status](https://codecov.io/github/pharo-contributions/Scheduler/coverage.svg?branch=master)](https://codecov.io/gh/pharo-contributions/Scheduler/branch/master)
+
+[![Pharo 7](https://img.shields.io/badge/Pharo-7.0-%23aac9ff.svg)](https://pharo.org/download)
+[![Pharo 8](https://img.shields.io/badge/Pharo-8.0-%23aac9ff.svg)](https://pharo.org/download)
+[![Pharo 9](https://img.shields.io/badge/Pharo-9.0-%23aac9ff.svg)](https://pharo.org/download)
+[![Pharo 10](https://img.shields.io/badge/Pharo-10-%23aac9ff.svg)](https://pharo.org/download)
+[![Pharo 11](https://img.shields.io/badge/Pharo-11-%23aac9ff.svg)](https://pharo.org/download)
+
 
 ## Quick start
 
