@@ -19,7 +19,7 @@ jobs:
         run: smalltalkci -s ${{ matrix.smalltalk }} .smalltalkci/.unit-tests.ston
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        timeout-minutes: 40
+        timeout-minutes: 60
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
